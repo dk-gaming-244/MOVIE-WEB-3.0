@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MOVIE WEB</title>
+  <meta name="description" content="Browse MOVIE WEB. Add legal watch/download links." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0b0f;
+      --panel: #12121a;
+      --muted: #9aa0a6;
+      --text: #f5f5f5;
+      --accent: #7c5cff;
+      --accent-2: #19a0ff;
+      --card: #161622;
+      --border: #232338;
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 10% -10%, rgba(124, 92, 255, .12), transparent),
+                  radial-gradient(900px 500px at 90% -20%, rgba(25, 160, 255, .10), transparent),
+                  var(--bg);
+      color: var(--text);
+    }
+    header {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(11,11,15,0.8), rgba(11,11,15,0.3) 60%, rgba(11,11,15,0));
+      border-bottom: 1px solid var(--border);
+    }
+    .nav {
+      max-width: 1200px; margin: 0 auto; padding: 16px 20px; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: .3px; }
+    .brand .logo {
+      width: 36px; height: 36px; border-radius: 12px; background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid; place-items: center; box-shadow: var(--shadow);
+      font-weight: 800;
+    }
+    .brand small { color: var(--muted); font-weight: 600; }
+    .controls { display: flex; gap: 10px; align-items: center; }
+    .search {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 10px 14px; width: min(520px, 70vw);
+    }
+    .search input { flex: 1; background: transparent; border: 0; color: var(--text); outline: none; font-size: 14px; }
+    .pill { padding: 10px 14px; border-radius: 999px; background: var(--panel); border: 1px solid var(--border); color: var(--text); cursor: pointer; }
+    .pill select { background: transparent; border: none; color: var(--text); outline: none; }
+
+    .layout { max-width: 1200px; margin: 18px auto; padding: 0 20px; display: grid; grid-template-columns: 260px 1fr; gap: 18px; }
+    aside { position: sticky; top: 84px; align-self: start; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .aside-head { padding: 14px 16px; border-bottom: 1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+    .aside-head h3 { margin: 0; font-size: 14px; letter-spacing: .3px; }
+    .director-list { max-height: 68vh; overflow: auto; }
+    .director { display:flex; align-items:center; gap: 10px; padding: 12px 14px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,.04); }
+    .director:hover { background: #171725; }
+    .director.active { background: linear-gradient(180deg, rgba(124,92,255,.18), rgba(124,92,255,.06)); }
+    .avatar { width: 36px; height: 36px; border-radius: 12px; background: #222; flex: none; display:grid; place-items:center; font-weight:700; }
+    .meta { display:flex; flex-direction:column; }
+    .meta small { color: var(--muted); }
+
+    main { min-height: 60vh; }
+    .section-head { display:flex; align-items:end; justify-content:space-between; margin: 4px 4px 10px; }
+    .section-head h2 { margin: 0; font-size: 22px; }
+    .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+    @media (max-width: 1200px) { .grid { grid-template-columns: repeat(5, 1fr); } }
+    @media (max-width: 980px) { .layout { grid-template-columns: 1fr; } aside { position: relative; top: 0; } .grid { grid-template-columns: repeat(4, 1fr);} }
+    @media (max-width: 680px) { .grid { grid-template-columns: repeat(2, 1fr);} .controls { flex-wrap: wrap; } .search { width: 100%; } }
+
+    .card { position: relative; background: var(--card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); }
+    .poster { aspect-ratio: 2/3; width: 100%; object-fit: cover; display: block; }
+    .card-body { padding: 10px 10px 12px; }
+    .title { font-weight: 700; font-size: 14px; line-height: 1.25; min-height: 36px; }
+    .tags { display:flex; gap: 6px; margin: 8px 0 10px; flex-wrap: wrap; }
+    .tag { font-size: 11px; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+    .actions { display:flex; gap: 8px; }
+    .btn { flex:1; display:inline-flex; justify-content:center; align-items:center; gap:8px; padding: 9px 10px; border-radius: 12px; border: 1px solid var(--border); background: #1b1b2b; color: var(--text); text-decoration:none; font-weight: 600; }
+    .btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); border: 0; }
+
+    .empty { padding: 30px; text-align: center; color: var(--muted); border: 1px dashed var(--border); border-radius: var(--radius); background: rgba(255,255,255,.02); }
+
+    .notice { max-width: 1200px; margin: 14px auto 0; padding: 12px 16px; border-radius: 12px; background: rgba(255, 213, 0, .08); color: #ffd500; border: 1px solid rgba(255, 213, 0, .25); font-size: 13px; }
+    .notice a { color: #ffe166; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <div class="logo">Ta</div>
+        <div>
+          <div>Tamil Movie Directory</div>
+          <small>Browse by Director • Legal links only</small>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/></svg>
+          <input id="searchInput" type="text" placeholder="Search movie titles… (Tamil)" />
+        </div>
+        <div class="pill">
+          <select id="genreFilter">
+            <option value="all">All genres</option>
+            <option>Action</option>
+            <option>Drama</option>
+            <option>Thriller</option>
+            <option>Crime</option>
+            <option>Romance</option>
+            <option>Comedy</option>
+          </select>
+        </div>
+        <div class="pill">
+          <select id="yearFilter">
+            <option value="all">All years</option>
+            <option value="2025-2021">2025–2021</option>
+            <option value="2020-2016">2020–2016</option>
+            <option value="older">2015 & older</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside>
+      <div class="aside-head">
+        <h3>Directors (Tamil)</h3>
+        <button id="resetBtn" class="pill" title="Show all movies">Reset</button>
+      </div>
+      <div id="directorList" class="director-list"></div>
+    </aside>
+
+    <main>
+      <div class="section-head">
+        <h2 id="sectionTitle">All Movies</h2>
+      </div>
+      <div id="movieGrid" class="grid"></div>
+      <div id="emptyState" class="empty" style="display:none;">No movies found. Try different filters or search.</div>
+    </main>
+  </div>
+
+  <div class="notice">
+    <strong>Important:</strong> Add only <em>official, authorized</em> watch/download links (OTT, YouTube, your own licensed files). Do not link to pirated content.
+  </div>
+
+  <script>
+    // ======== DATA (Edit this) ========
+    // Replace '#' with your LEGAL links. Use poster URLs you have rights to, or placeholders.
+    const DATA = [
+      {
+        id: 'lokesh',
+        name: 'Lokesh Kanagaraj',
+        initials: 'LK',
+        movies: [
+          { title: 'Maanagaram', year: 2017, genre: ['Thriller', 'Drama'], poster: 'https://i.postimg.cc/SsMfyKZn/MV5-BOWZh-OTcw-ZTkt-OWVi-Yy00-Zm-Y3-LWE5-OTgt-M2-Jl-ZDhh-Nzg2-OTBi-Xk-Ey-Xk-Fqc-Gc-V1-FMjpg-UX1000.jpg', watchUrl: '#', downloadUrl: '#'},
+          { title: 'Kaithi', year: 2019, genre: ['Action', 'Thriller'], poster: 'https://i.postimg.cc/J4wdHfZw/Kaithi-Poster.webp', watchUrl: '#', downloadUrl: '#'},
+          { title: 'Master', year: 2021, genre: ['Action', 'Drama'], poster: 'https://i.postimg.cc/RZFQbGzC/images.jpg', watchUrl: '#', downloadUrl: '#'},
+          { title: 'Vikram', year: 2022, genre: ['Action', 'Thriller', 'Crime'], poster: 'https://i.postimg.cc/6pcRwZtj/Vikram-Kamal-Haasan-Tamil-Movie-Poster-31d221fa-7b4a-492a-9643-a0a200c01554.jpg', watchUrl: '#', downloadUrl: '#'},
+          { title: 'Leo', year: 2023, genre: ['Action', 'Thriller'], poster: 'https://i.postimg.cc/nzcDChcF/d23f41184733377-65571621a3846.jpg', watchUrl: '#', downloadUrl: '#'},
+          { title: 'Coolie', year: 2025, genre: ['Action'], poster: 'https://i.postimg.cc/y88xmbCj/images-1.jpg', watchUrl: '#', downloadUrl: '#'}
+        ]
+      },
+      {
+        id: 'mani',
+        name: 'Mani Ratnam',
+        initials: 'MR',
+        movies: [
+          { title: 'Roja', year: 1992, genre: ['Romance', 'Drama'], poster: 'https://i.postimg.cc/xTWbzTyV/MV5-BYTY2-ZDg4-OWIt-MGE3-Ny00-Mj-Ix-LTkz-ZDkt-N2-Y1-N2-Ni-NGE2-ZGNh-Xk-Ey-Xk-Fqc-Gc-V1.jpg', watchUrl: '#', downloadUrl: '#'},
+          { title: 'Thalapathi', year: 1991, genre: ['Drama', 'Action'], poster: 'https://i.postimg.cc/nhhzVSMS/6d7ba9b618220eae5a17887bd96c78deea0d4f94a65e67d1f5fa09fba7471ad1.jpg', watchUrl: '#', downloadUrl: '#'},
+          { title: 'Ponniyin Selvan: I', year: 2022, genre: ['Drama', 'Action'], poster: 'https://i.postimg.cc/76vBtkyF/images-2.jpg', watchUrl: '#', downloadUrl: '#'},
+          { title: 'Ponniyin Selvan: II', year: 2023, genre: ['Drama', 'Action'], poster: 'https://i.postimg.cc/vZPhmmzm/MV5-BZm-U1-Zm-Qw-MGYt-Zj-Y1-MS00-NGE0-LTkz-Mzgt-N2-Uy-YTNi-ZDFh-NTc2-Xk-Ey-Xk-Fqc-Gc-V1.jpg', watchUrl: '#', downloadUrl: '#'}
+        ]
+      },
+      {
+        id: 'atlee',
+        name: 'Atlee',
+        initials: 'AT',
+        movies: [
+          { title: 'Raja Rani', year: 2013, genre: ['Romance', 'Drama'], poster: 'https://i.postimg.cc/KzLWmYNc/Raja-Rani-2013-poster.jpg', watchUrl: '#', downloadUrl: '#'},
+          { title: 'Theri', year: 2016, genre: ['Action', 'Drama'], poster: 'https://i.postimg.cc/25CRchFd/theri-et00036069-18-06-2017-01-41-22.avif', watchUrl: '#', downloadUrl: '#'},
+         { title: 'Mersal', year: 2017, genre: ['Action', 'Thriller'], poster: 'https://i.postimg.cc/zGxZQ3d9/MV5-BNjk2-NGQw-Nm-Yt-MDVi-ZS00-Nj-E5-LWI4-Mz-Mt-ZWJj-Zm-Iw-Nm-I5-ODk2-Xk-Ey-Xk-Fqc-Gc-V1.jpg', watchUrl: 'https://drive.google.com/file/d/16gXLtlO6WB6ijuZeswo7EEIivMySzOmF/preview', downloadUrl: 'https://drive.google.com/uc?export=download&id=16gXLtlO6WB6ijuZeswo7EEIivMySzOmF'},
+         { title: 'Biglia', year: 2019, genre: ['Action', 'Sport'], poster: 'https://i.postimg.cc/fyc1fbtq/images-4.jpg', watchUrl: '#', downloadUrl: '#'}
+        ]
+      }
+    ];
+
+    // ======== APP STATE ========
+    let state = {
+      directorId: null,
+      search: '',
+      genre: 'all',
+      yearRange: 'all'
+    };
+
+    // ======== UTIL ========
+    function el(tag, attrs = {}, children = []) {
+      const node = document.createElement(tag);
+      Object.entries(attrs).forEach(([k, v]) => {
+        if (k === 'class') node.className = v;
+        else if (k === 'html') node.innerHTML = v;
+        else if (k === 'text') node.textContent = v;
+        else node.setAttribute(k, v);
+      });
+      children.forEach(c => node.appendChild(c));
+      return node;
+    }
+
+    function inYearRange(year, range) {
+      if (range === 'all') return true;
+      if (range === 'older') return year <= 2015;
+      const [to, from] = range.split('-').map(Number); // e.g., '2025-2021'
+      return year <= to && year >= from;
+    }
+
+    function uniqueGenres(data) {
+      const set = new Set();
+      data.forEach(d => d.movies.forEach(m => (m.genre || []).forEach(g => set.add(g))));
+      return Array.from(set).sort();
+    }
+
+    // ======== RENDER: DIRECTORS ========
+    const directorList = document.getElementById('directorList');
+    function renderDirectors() {
+      directorList.innerHTML = '';
+      DATA.forEach(d => {
+        const item = el('div', { class: 'director' + (state.directorId===d.id ? ' active': ''), 'data-id': d.id });
+        item.appendChild(el('div', { class: 'avatar', text: d.initials }));
+        const meta = el('div', { class: 'meta' });
+        meta.appendChild(el('div', { text: d.name }));
+        meta.appendChild(el('small', { text: `${d.movies.length} movies` }));
+        item.appendChild(meta);
+        item.addEventListener('click', () => { state.directorId = d.id; update(); });
+        directorList.appendChild(item);
+      });
+    }
+
+    // ======== RENDER: MOVIES ========
+    const movieGrid = document.getElementById('movieGrid');
+    const emptyState = document.getElementById('emptyState');
+    const sectionTitle = document.getElementById('sectionTitle');
+
+    function getFilteredMovies() {
+      const pool = state.directorId ? DATA.filter(d => d.id === state.directorId) : DATA;
+      const entries = [];
+      pool.forEach(d => d.movies.forEach(m => entries.push({ ...m, director: d.name })));
+
+      return entries.filter(m => {
+        const matchesSearch = m.title.toLowerCase().includes(state.search.toLowerCase());
+        const matchesGenre = state.genre === 'all' ? true : (m.genre || []).includes(state.genre);
+        const matchesYear = inYearRange(Number(m.year), state.yearRange);
+        return matchesSearch && matchesGenre && matchesYear;
+      }).sort((a,b) => b.year - a.year);
+    }
+
+    function renderMovies() {
+      const movies = getFilteredMovies();
+      movieGrid.innerHTML = '';
+      sectionTitle.textContent = state.directorId ? (DATA.find(d=>d.id===state.directorId)?.name + ' • Movies') : 'All Movies';
+
+      if (!movies.length) {
+        emptyState.style.display = 'block';
+        return;
+      } else {
+        emptyState.style.display = 'none';
+      }
+
+      movies.forEach(m => {
+        const card = el('div', { class: 'card' });
+        const img = el('img', { class: 'poster', src: m.poster || 'https://placehold.co/400x600?text=Poster', alt: m.title });
+        const body = el('div', { class: 'card-body' });
+        const title = el('div', { class: 'title', html: `${m.title} <span style="color:var(--muted); font-weight:600;">(${m.year})</span>` });
+        const tags = el('div', { class: 'tags' });
+        (m.genre || []).slice(0,3).forEach(g => tags.appendChild(el('span', { class: 'tag', text: g })));
+        const actions = el('div', { class: 'actions' });
+        const watch = el('a', { class: 'btn primary', href: m.watchUrl || '#', target: '_blank', rel: 'noopener' }, [document.createTextNode('Watch')]);
+        const dl = el('a', { class: 'btn', href: m.downloadUrl || '#', target: '_blank', rel: 'noopener' }, [document.createTextNode('Download')]);
+
+        body.appendChild(title);
+        body.appendChild(tags);
+        actions.appendChild(watch);
+        actions.appendChild(dl);
+        body.appendChild(actions);
+        card.appendChild(img);
+        card.appendChild(body);
+        movieGrid.appendChild(card);
+      });
+    }
+
+    // ======== FILTERS ========
+    const searchInput = document.getElementById('searchInput');
+    const genreFilter = document.getElementById('genreFilter');
+    const yearFilter = document.getElementById('yearFilter');
+    const resetBtn = document.getElementById('resetBtn');
+
+    function hydrateGenreFilter() {
+      // Merge built-ins with unique genres from DATA
+      const built = new Set(['All genres','Action','Drama','Thriller','Crime','Romance','Comedy']);
+      uniqueGenres(DATA).forEach(g => { if (!built.has(g)) genreFilter.appendChild(new Option(g, g)); });
+    }
+
+    searchInput.addEventListener('input', (e) => { state.search = e.target.value; update(); });
+    genreFilter.addEventListener('change', (e) => { state.genre = e.target.value; update(); });
+    yearFilter.addEventListener('change', (e) => { state.yearRange = e.target.value; update(); });
+    resetBtn.addEventListener('click', () => { state = { directorId: null, search: '', genre: 'all', yearRange: 'all' }; searchInput.value=''; genreFilter.value='all'; yearFilter.value='all'; update(); });
+
+    function update() { renderDirectors(); renderMovies(); }
+
+    // ======== INIT ========
+    hydrateGenreFilter();
+    update();
+
+    // ======== HOW TO EDIT (Quick Guide) ========
+    // 1) Add a director: push a new object into DATA with id, name, initials, movies[]
+    // 2) Add a movie: inside that director's movies[], add { title, year, genre:[..], poster, watchUrl, downloadUrl }
+    // 3) Replace '#' with official OTT/YouTube/self-hosted LEGAL links.
+    // 4) Host this single file anywhere (GitHub Pages, Netlify, Vercel, shared hosting). It’s fully static.
+  </script>
+</body>
+</html>
