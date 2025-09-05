@@ -72,12 +72,12 @@
     main { min-height: 60vh; }
     .section-head { display:flex; align-items:end; justify-content:space-between; margin: 4px 4px 10px; }
     .section-head h2 { margin: 0; font-size: 22px; }
-    .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
     @media (max-width: 1200px) { .grid { grid-template-columns: repeat(5, 1fr); } }
     @media (max-width: 980px) { .layout { grid-template-columns: 1fr; } aside { position: relative; top: 0; } .grid { grid-template-columns: repeat(4, 1fr);} }
     @media (max-width: 680px) { .grid { grid-template-columns: repeat(2, 1fr);} .controls { flex-wrap: wrap; } .search { width: 100%; } }
 
-    .card { position: relative; background: var(--card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); }
+    .card { position: relative; background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
     .poster { aspect-ratio: 2/3; width: 100%; object-fit: cover; display: block; }
     .card-body { padding: 10px 10px 12px; }
     .title { font-weight: 700; font-size: 14px; line-height: 1.25; min-height: 36px; }
@@ -148,11 +148,7 @@
       <div id="emptyState" class="empty" style="display:none;">No movies found. Try different filters or search.</div>
     </main>
   </div>
-
-  <div class="notice">
-    <strong>Important:</strong> Add only <em>official, authorized</em> watch/download links (OTT, YouTube, your own licensed files). Do not link to pirated content.
-  </div>
-
+  
   <script>
     // ======== DATA (Edit this) ========
     // Replace '#' with your LEGAL links. Use poster URLs you have rights to, or placeholders.
@@ -162,12 +158,11 @@
         name: 'Lokesh Kanagaraj',
         initials: 'LK',
         movies: [
-          { title: 'Maanagaram', year: 2017, genre: ['Thriller', 'Drama'], poster: 'https://i.postimg.cc/SsMfyKZn/MV5-BOWZh-OTcw-ZTkt-OWVi-Yy00-Zm-Y3-LWE5-OTgt-M2-Jl-ZDhh-Nzg2-OTBi-Xk-Ey-Xk-Fqc-Gc-V1-FMjpg-UX1000.jpg', watchUrl: '#', downloadUrl: '#'},
-          { title: 'Kaithi', year: 2019, genre: ['Action', 'Thriller'], poster: 'https://i.postimg.cc/J4wdHfZw/Kaithi-Poster.webp', watchUrl: '#', downloadUrl: '#'},
-          { title: 'Master', year: 2021, genre: ['Action', 'Drama'], poster: 'https://i.postimg.cc/RZFQbGzC/images.jpg', watchUrl: '#', downloadUrl: '#'},
-          { title: 'Vikram', year: 2022, genre: ['Action', 'Thriller', 'Crime'], poster: 'https://i.postimg.cc/6pcRwZtj/Vikram-Kamal-Haasan-Tamil-Movie-Poster-31d221fa-7b4a-492a-9643-a0a200c01554.jpg', watchUrl: '#', downloadUrl: '#'},
-          { title: 'Leo', year: 2023, genre: ['Action', 'Thriller'], poster: 'https://i.postimg.cc/nzcDChcF/d23f41184733377-65571621a3846.jpg', watchUrl: '#', downloadUrl: '#'},
-          { title: 'Coolie', year: 2025, genre: ['Action'], poster: 'https://i.postimg.cc/y88xmbCj/images-1.jpg', watchUrl: '#', downloadUrl: '#'}
+          { title: 'Maanagaram', year: 2017, genre: ['Thriller', 'Drama'], poster: 'https://i.postimg.cc/SsMfyKZn/MV5-BOWZh-OTcw-ZTkt-OWVi-Yy00-Zm-Y3-LWE5-OTgt-M2-Jl-ZDhh-Nzg2-OTBi-Xk-Ey-Xk-Fqc-Gc-V1-FMjpg-UX1000.jpg', watchUrl: 'https://drive.google.com/file/d/16feRG7hKkno7OuyK5XL8lEwrmHwH_S0m/preview', downloadUrl: 'https://drive.google.com/uc?export=download&id=16feRG7hKkno7OuyK5XL8lEwrmHwH_S0m'},
+          { title: 'Kaithi', year: 2019, genre: ['Action', 'Thriller'], poster: 'https://i.postimg.cc/J4wdHfZw/Kaithi-Poster.webp', watchUrl: 'https://drive.google.com/file/d/1jRIbaAgrHYTcVDB1dij425y82RzgTJNC/preview', downloadUrl: 'https://drive.google.com/uc?export=download&id=1jRIbaAgrHYTcVDB1dij425y82RzgTJNC'},
+          { title: 'Master', year: 2021, genre: ['Action', 'Drama'], poster: 'https://i.postimg.cc/RZFQbGzC/images.jpg', watchUrl: 'https://drive.google.com/file/d/1uFTJId3ESyBm-O9wCHpAsqS1rNcvCPhk/preview', downloadUrl: 'https://drive.google.com/uc?export=download&id=1uFTJId3ESyBm-O9wCHpAsqS1rNcvCPhk'},
+          { title: 'Vikram', year: 2022, genre: ['Action', 'Thriller', 'Crime'], poster: 'https://i.postimg.cc/6pcRwZtj/Vikram-Kamal-Haasan-Tamil-Movie-Poster-31d221fa-7b4a-492a-9643-a0a200c01554.jpg', watchUrl: 'https://drive.google.com/file/d/15Uwook8tG-edvYgK19JEtwXDR-Kr1X4v/preview', downloadUrl: 'https://drive.google.com/uc?export=download&id=15Uwook8tG-edvYgK19JEtwXDR-Kr1X4v'},
+          { title: 'Leo', year: 2023, genre: ['Action', 'Thriller'], poster: 'https://i.postimg.cc/nzcDChcF/d23f41184733377-65571621a3846.jpg', watchUrl: 'https://drive.google.com/file/d/1QImoRgmBFkqqrSQuAxlwRPEtTpq3WyrF/preview', downloadUrl: 'https://drive.google.com/uc?export=download&id=1QImoRgmBFkqqrSQuAxlwRPEtTpq3WyrF'}
         ]
       },
       {
@@ -175,10 +170,10 @@
         name: 'Mani Ratnam',
         initials: 'MR',
         movies: [
-          { title: 'Roja', year: 1992, genre: ['Romance', 'Drama'], poster: 'https://i.postimg.cc/xTWbzTyV/MV5-BYTY2-ZDg4-OWIt-MGE3-Ny00-Mj-Ix-LTkz-ZDkt-N2-Y1-N2-Ni-NGE2-ZGNh-Xk-Ey-Xk-Fqc-Gc-V1.jpg', watchUrl: '#', downloadUrl: '#'},
-          { title: 'Thalapathi', year: 1991, genre: ['Drama', 'Action'], poster: 'https://i.postimg.cc/nhhzVSMS/6d7ba9b618220eae5a17887bd96c78deea0d4f94a65e67d1f5fa09fba7471ad1.jpg', watchUrl: '#', downloadUrl: '#'},
-          { title: 'Ponniyin Selvan: I', year: 2022, genre: ['Drama', 'Action'], poster: 'https://i.postimg.cc/76vBtkyF/images-2.jpg', watchUrl: '#', downloadUrl: '#'},
-          { title: 'Ponniyin Selvan: II', year: 2023, genre: ['Drama', 'Action'], poster: 'https://i.postimg.cc/vZPhmmzm/MV5-BZm-U1-Zm-Qw-MGYt-Zj-Y1-MS00-NGE0-LTkz-Mzgt-N2-Uy-YTNi-ZDFh-NTc2-Xk-Ey-Xk-Fqc-Gc-V1.jpg', watchUrl: '#', downloadUrl: '#'}
+          { title: 'Roja', year: 1992, genre: ['Romance', 'Drama'], poster: 'https://i.postimg.cc/xTWbzTyV/MV5-BYTY2-ZDg4-OWIt-MGE3-Ny00-Mj-Ix-LTkz-ZDkt-N2-Y1-N2-Ni-NGE2-ZGNh-Xk-Ey-Xk-Fqc-Gc-V1.jpg', watchUrl: 'https://drive.google.com/file/d/157TnqUfzDr9Hex6tMyWX5o8BwsHQSkoR/preview', downloadUrl: 'https://drive.google.com/uc?export=download&id=157TnqUfzDr9Hex6tMyWX5o8BwsHQSkoR'},
+          { title: 'Thalapathi', year: 1991, genre: ['Drama', 'Action'], poster: 'https://i.postimg.cc/nhhzVSMS/6d7ba9b618220eae5a17887bd96c78deea0d4f94a65e67d1f5fa09fba7471ad1.jpg', watchUrl: 'https://drive.google.com/file/d/1hdapEZ5_cmuzi3TwL-kkorVklKPo6uzl/preview', downloadUrl: 'https://drive.google.com/uc?export=download&id=1hdapEZ5_cmuzi3TwL-kkorVklKPo6uzl'},
+          { title: 'Ponniyin Selvan: I', year: 2022, genre: ['Drama', 'Action'], poster: 'https://i.postimg.cc/76vBtkyF/images-2.jpg', watchUrl: 'https://drive.google.com/file/d/13sWJXyXRIt_RvjvvK6RnolqGhn6_9YrV/preview', downloadUrl: 'https://drive.google.com/uc?export=download&id=13sWJXyXRIt_RvjvvK6RnolqGhn6_9YrV'},
+          { title: 'Ponniyin Selvan: II', year: 2023, genre: ['Drama', 'Action'], poster: 'https://i.postimg.cc/vZPhmmzm/MV5-BZm-U1-Zm-Qw-MGYt-Zj-Y1-MS00-NGE0-LTkz-Mzgt-N2-Uy-YTNi-ZDFh-NTc2-Xk-Ey-Xk-Fqc-Gc-V1.jpg', watchUrl: 'https://drive.google.com/file/d/143Z2JHPP2FKOaaUxaOKrrerCMxWEW9t7/preview', downloadUrl: 'https://drive.google.com/uc?export=download&id=143Z2JHPP2FKOaaUxaOKrrerCMxWEW9t7'}
         ]
       },
       {
@@ -186,10 +181,10 @@
         name: 'Atlee',
         initials: 'AT',
         movies: [
-          { title: 'Raja Rani', year: 2013, genre: ['Romance', 'Drama'], poster: 'https://i.postimg.cc/KzLWmYNc/Raja-Rani-2013-poster.jpg', watchUrl: '#', downloadUrl: '#'},
-          { title: 'Theri', year: 2016, genre: ['Action', 'Drama'], poster: 'https://i.postimg.cc/25CRchFd/theri-et00036069-18-06-2017-01-41-22.avif', watchUrl: '#', downloadUrl: '#'},
-         { title: 'Mersal', year: 2017, genre: ['Action', 'Thriller'], poster: 'https://i.postimg.cc/zGxZQ3d9/MV5-BNjk2-NGQw-Nm-Yt-MDVi-ZS00-Nj-E5-LWI4-Mz-Mt-ZWJj-Zm-Iw-Nm-I5-ODk2-Xk-Ey-Xk-Fqc-Gc-V1.jpg', watchUrl: 'https://drive.google.com/file/d/16gXLtlO6WB6ijuZeswo7EEIivMySzOmF/preview', downloadUrl: 'https://drive.google.com/uc?export=download&id=16gXLtlO6WB6ijuZeswo7EEIivMySzOmF'},
-         { title: 'Biglia', year: 2019, genre: ['Action', 'Sport'], poster: 'https://i.postimg.cc/fyc1fbtq/images-4.jpg', watchUrl: '#', downloadUrl: '#'}
+          { title: 'Raja Rani', year: 2013, genre: ['Romance', 'Drama'], poster: 'https://i.postimg.cc/KzLWmYNc/Raja-Rani-2013-poster.jpg', watchUrl: 'https://drive.google.com/file/d/1vehyzN21dbw1kE30NPAFe4nK4MQmWwHn/preview', downloadUrl: 'https://drive.google.com/uc?export=download&id=1vehyzN21dbw1kE30NPAFe4nK4MQmWwHn'},
+          { title: 'Theri', year: 2016, genre: ['Action', 'Drama'], poster: 'https://i.postimg.cc/25CRchFd/theri-et00036069-18-06-2017-01-41-22.avif', watchUrl: 'https://drive.google.com/file/d/1av8BmNRTjsBB6LeKwhUQiHIjCzjLgrid/preview', downloadUrl: 'https://drive.google.com/uc?export=download&id=1av8BmNRTjsBB6LeKwhUQiHIjCzjLgrid'},
+         { title: 'Mersal', year: 2017, genre: ['Action', 'Thriller'], poster: 'https://i.postimg.cc/9fs5zgNs/50020840773-8c0ee28551-b.jpg', watchUrl: 'https://drive.google.com/file/d/1Oz2sbmYCd6D6lKwj9EnSjqJ1-uwmQc4n/preview', downloadUrl: 'https://drive.google.com/uc?export=download&id=1Oz2sbmYCd6D6lKwj9EnSjqJ1-uwmQc4n'},
+         { title: 'Biglia', year: 2019, genre: ['Action', 'Sport'], poster: 'https://i.postimg.cc/fyc1fbtq/images-4.jpg', watchUrl: 'https://drive.google.com/file/d/1jjiZl-c50muZbJdqvqdvsG-9Io1LgkQB/preview', downloadUrl: 'https://drive.google.com/uc?export=download&id=1jjiZl-c50muZbJdqvqdvsG-9Io1LgkQB'}
         ]
       }
     ];
